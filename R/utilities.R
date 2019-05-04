@@ -1,7 +1,6 @@
 library(rjson)
 library(stringr)
 library(DBI)
-
 extract_query <- function(route, name)
 {
     content <- paste(readLines(route,warn=FALSE,skipNul = TRUE), collapse="\n")

@@ -1,0 +1,5 @@
+-- SeQLR/{"Name":"chunk1", "param":{"id":"2"}}\SeQLR
+select * from users where id=${id}
+
+-- SeQLR/{"Name":"chunk2", "param":{"id":"3"}}\SeQLR
+select * from users where id=${id}
