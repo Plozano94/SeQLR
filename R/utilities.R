@@ -35,6 +35,6 @@ execute_query <- function(route, name, impala = FALSE,params=NULL)
     query_selected <- extract_query(route, name)
     query <- format_query(query_selected)
     print(query)
-    con <- dbConnect(dbDriver("MySQL"), user = "testuser", password="testpassword", dbname = "seqlr")
+    #con <- dbConnect(dbDriver("MySQL"), user = "testuser", password="testpassword", dbname = "seqlr")
     return(send_query(query))
 }
