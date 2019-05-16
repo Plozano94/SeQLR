@@ -16,7 +16,6 @@ extract_query <- function(route, name) {
                 names = c("query", "name", "param")
             )
         returned_list
-
     }
     sqldata <- lapply(queries, extract)
 
@@ -29,7 +28,7 @@ extract_query <- function(route, name) {
 format_query <- function(query_selected) {
     if (!is.null(query_selected$param)) {
         for (key in names(query_selected$param)) {
-            query = str_replace_all(query_selected$query, paste0("\\$\\{", key, "\\}"), query_selected$param[[key]])
+            query = stringr::str_replace_all(query_selected$query, paste0("\\$\\{", key, "\\}"), query_selected$param[[key]])
         }
     }
     return(query)
