@@ -1,17 +1,15 @@
-library(rjson)
-library(stringr)
-library(DBI)
+
 extract_query <- function(route, name) {
     content <- paste(readLines(route, warn = FALSE, skipNul = TRUE), collapse = "\n")
     queries <- paste0("SeQLR/", strsplit(content, "SeQLR/")[[1]])
     queries <- queries[2:length(queries)]
     extract <- function(querie) {
-        q <- str_replace_all(strsplit(querie, "\\\\SeQLR")[[1]][2], "\n", "") %>% str_replace_all("-", "")
-        metadata <- fromJSON(str_match_all(querie, "(?<=SeQLR/)(.*)(?=\\\\SeQLR)")[[1]][, 1])
+        q <- stringr::str_replace_all(strsplit(querie, "\\\\SeQLR")[[1]][2], "\n", "") %>% stringr::str_replace_all("-", "")
+        metadata <- rjson::fromJSON(stringr::str_match_all(querie, "(?<=SeQLR/)(.*)(?=\\\\SeQLR)")[[1]][, 1])
         return(list(query = q[[1]], name = metadata["Name"][[1]], param = metadata$param))
     }
     sqldata <- lapply(queries, extract)
-    
+
     # Selecting chunk
     cond <- lapply(sqldata, function(x) x$name == name)
     query_selected <- sqldata[unlist(cond)][[1]]
@@ -21,7 +19,7 @@ extract_query <- function(route, name) {
 format_query <- function(query_selected) {
     if (!is.null(query_selected$param)) {
         for (key in names(query_selected$param)) {
-            query = str_replace_all(query_selected$query, paste0("\\$\\{", key, "\\}"), query_selected$param[[key]])
+            query = stringr::str_replace_all(query_selected$query, paste0("\\$\\{", key, "\\}"), query_selected$param[[key]])
         }
     }
     return(query)
