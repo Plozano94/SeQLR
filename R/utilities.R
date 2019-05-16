@@ -6,7 +6,16 @@ extract_query <- function(route, name) {
     extract <- function(querie) {
         q <- stringr::str_replace_all(strsplit(querie, "\\\\SeQLR")[[1]][2], "\n", "") %>% stringr::str_replace_all("-", "")
         metadata <- rjson::fromJSON(stringr::str_match_all(querie, "(?<=SeQLR/)(.*)(?=\\\\SeQLR)")[[1]][, 1])
-        return(list(query = q[[1]], name = metadata["Name"][[1]], param = metadata$param))
+        returned_list <-
+            structure(
+                list(
+                    q[[1]],
+                    metadata["Name"][[1]],
+                    metadata$param
+                ),
+                names = c("query", "name", "param")
+            )
+        returned_list
     }
     sqldata <- lapply(queries, extract)
 
