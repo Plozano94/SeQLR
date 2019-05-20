@@ -4,7 +4,8 @@ extract_query <- function(route, name) {
     queries <- paste0("SeQLR/", strsplit(content, "SeQLR/")[[1]])
     queries <- queries[2:length(queries)]
     extract <- function(querie) {
-        q <- stringr::str_replace_all(strsplit(querie, "\\\\SeQLR")[[1]][2], "\n", "") %>% stringr::str_replace_all("-", "")
+        q <- stringr::str_replace_all(strsplit(querie, "\\\\SeQLR")[[1]][2], "\n", "") %>%
+            stringr::str_replace_all("-", "")
         metadata <- rjson::fromJSON(stringr::str_match_all(querie, "(?<=SeQLR/)(.*)(?=\\\\SeQLR)")[[1]][, 1])
         returned_list <-
             structure(
